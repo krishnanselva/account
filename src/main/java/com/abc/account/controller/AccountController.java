@@ -21,8 +21,8 @@ public class AccountController {
 
     @ApiOperation(value = "Get All Accounts")
     @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts() {
-        return null;
+    public ResponseEntity<List<Account>> findAllAccounts() {
+        return new ResponseEntity<List<Account>>(accountService.findAllAccounts(), HttpStatus.OK);
 
     }
 
