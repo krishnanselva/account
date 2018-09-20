@@ -5,6 +5,10 @@ import java.io.Serializable;
 public class DomainObject implements Serializable {
     private Long id;
 
+    public DomainObject() {
+
+    }
+
     public Long getId() {
         return id;
     }

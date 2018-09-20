@@ -4,7 +4,11 @@ public class Account extends DomainObject {
 
     private String firstName;
     private String secondName;
+
     private String accountNumber;
+
+    public Account() {
+    }
 
     public Account(Long id, String firstName, String secondName, String accountNumber) {
         this(firstName, secondName, accountNumber);
