@@ -4,6 +4,7 @@ import com.abc.account.data.AccountEntity;
 import com.abc.account.data.AccountRepository;
 import com.abc.account.domain.Account;
 import com.abc.account.domain.Message;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.abc.account.Constants.ACCOUNT_CREATED;
+import static com.abc.account.Constants.REST_API_PATH;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +40,7 @@ public class AccountIntegrationTest {
     private TestRestTemplate template = new TestRestTemplate();
 
     private String getBaseUrl() {
-        return LOCAL_HOST + port + "/account-project/rest/account/json";
+        return LOCAL_HOST + port + REST_API_PATH;
     }
 
     private void createAccounts() {
@@ -81,7 +84,7 @@ public class AccountIntegrationTest {
                 });
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Creation message here", response.getBody().getMessage());
+        assertEquals(ACCOUNT_CREATED, response.getBody().getMessage());
 
         String locationOfCreatedResource = response.getHeaders().get("location").get(0);
 
@@ -94,7 +97,7 @@ public class AccountIntegrationTest {
                 });
 
         Account getCallAccount = getCallResponse.getBody();
-
+        Assertions.assertThat(getCallAccount.getId()).isNotNull().isNotZero();
         assertEquals("Will", getCallAccount.getFirstName());
         assertEquals("Jones", getCallAccount.getSecondName());
         assertEquals("456", getCallAccount.getAccountNumber());
