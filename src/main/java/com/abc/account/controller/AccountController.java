@@ -22,6 +22,7 @@ public class AccountController {
     @ApiOperation(value = "Get All Accounts")
     @GetMapping
     public ResponseEntity<List<Account>> findAllAccounts() {
+        logger.info("findAllAccounts");
         return new ResponseEntity<List<Account>>(accountService.findAllAccounts(), HttpStatus.OK);
 
     }
@@ -29,6 +30,7 @@ public class AccountController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleException(Exception e) {
-        logger.info(e.toString(), e);
+        logger.error(e.toString());
+        logger.debug(e.toString(), e);
     }
 }
