@@ -3,13 +3,16 @@ package com.abc.account.domain;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private String value;
+    private String message;
 
-    public Message(String value) {
-        this.value = value;
+    public Message() {
     }
 
-    public String getValue() {
-        return value;
+    public Message(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }
