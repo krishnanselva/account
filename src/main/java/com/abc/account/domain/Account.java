@@ -6,7 +6,13 @@ public class Account extends DomainObject {
     private String secondName;
     private String accountNumber;
 
+    public Account(Long id, String firstName, String secondName, String accountNumber) {
+        this(firstName, secondName, accountNumber);
+        setId(id);
+    }
+
     public Account(String firstName, String secondName, String accountNumber) {
+
         this.firstName = firstName;
         this.secondName = secondName;
         this.accountNumber = accountNumber;
