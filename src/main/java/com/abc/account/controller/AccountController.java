@@ -43,6 +43,13 @@ public class AccountController {
         return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_CREATED), headers, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Delete Account")
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<Message> deleteAccount(@PathVariable Long accountId) {
+        accountService.deleteAccount(accountId);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_CREATED), null, HttpStatus.OK);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleException(Exception e) {
