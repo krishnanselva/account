@@ -24,6 +24,8 @@ public class AccountRepositoryTest {
 
     @Test
     public void findAllAccounts_returns3Accounts() throws Exception {
+        accountRepository.deleteAll();
+        entityManager.flush();
         List<AccountEntity> accountEntities = new ArrayList<AccountEntity>();
         accountEntities.add(new AccountEntity("John", "Doe", "1234"));
         accountEntities.add(new AccountEntity("Jane", "Doe", "1235"));
@@ -41,5 +43,12 @@ public class AccountRepositoryTest {
 
     }
 
+
+    @Test
+    public void createAccount_returnsAccountId() throws Exception {
+        AccountEntity accountEntity = new AccountEntity("Steven", "Doe", "12381");
+        AccountEntity accountEntitySaved = entityManager.persistAndFlush(accountEntity);
+        Assertions.assertThat(accountEntitySaved.getId()).isNotNull().isNotZero();
+    }
 
 }
