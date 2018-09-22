@@ -4,7 +4,6 @@ import com.abc.account.data.AccountEntity;
 import com.abc.account.data.AccountRepository;
 import com.abc.account.domain.Account;
 import com.abc.account.domain.Message;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,20 +85,5 @@ public class AccountIntegrationTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(ACCOUNT_CREATED, response.getBody().getMessage());
 
-        String locationOfCreatedResource = response.getHeaders().get("location").get(0);
-
-        //get this account and verify that it is all correct
-        ResponseEntity<Account> getCallResponse = template.exchange(
-                locationOfCreatedResource,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<Account>() {
-                });
-
-        Account getCallAccount = getCallResponse.getBody();
-        Assertions.assertThat(getCallAccount.getId()).isNotNull().isNotZero();
-        assertEquals("Will", getCallAccount.getFirstName());
-        assertEquals("Jones", getCallAccount.getSecondName());
-        assertEquals("456", getCallAccount.getAccountNumber());
     }
 }
