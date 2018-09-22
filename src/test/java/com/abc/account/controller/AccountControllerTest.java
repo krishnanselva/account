@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.abc.account.Constants.REST_API_PATH;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,5 +64,12 @@ public class AccountControllerTest {
         mockMvc.perform(builder).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_CREATED));
 
     }
+
+
+    @Test
+    public void deleteAccount_returnMessage() throws Exception {
+        mockMvc.perform(delete(REST_API_PATH + "/1")).andExpect(status().isOk());
+    }
+
 
 }

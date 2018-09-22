@@ -29,4 +29,8 @@ public class AccountService {
         AccountEntity accountEntitySaved = accountRepository.save(accountEntity);
         return accountEntitySaved.getId();
     }
+
+    public void deleteAccount(Long l) {
+
+    }
 }
