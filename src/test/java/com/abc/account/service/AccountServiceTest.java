@@ -15,7 +15,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,6 +58,6 @@ public class AccountServiceTest {
 
     @Test
     public void deleteAccount_returnsVoid() throws Exception {
-        verify(accountRepository).deleteById(any(Long.class));
+        accountService.deleteAccount(1L);
     }
 }

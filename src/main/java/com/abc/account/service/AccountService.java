@@ -30,7 +30,7 @@ public class AccountService {
         return accountEntitySaved.getId();
     }
 
-    public void deleteAccount(Long l) {
-
+    public void deleteAccount(Long accountId) {
+        accountRepository.deleteById(accountId);
     }
 }
