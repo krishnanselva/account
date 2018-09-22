@@ -18,8 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.abc.account.Constants.ACCOUNT_CREATED;
-import static com.abc.account.Constants.REST_API_PATH;
+import static com.abc.account.Constants.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -84,6 +83,23 @@ public class AccountIntegrationTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(ACCOUNT_CREATED, response.getBody().getMessage());
+
+    }
+
+    @Test
+    public void shouldDeleteAccount() {
+
+        AccountEntity accountEntity = accountRepository.save(new AccountEntity("Will", "Jones", "456"));
+
+        ResponseEntity<Message> response = template.exchange(
+                getBaseUrl() + "/" + accountEntity.getId(),
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<Message>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ACCOUNT_DELETED, response.getBody().getMessage());
 
     }
 }
