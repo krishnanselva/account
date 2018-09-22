@@ -25,6 +25,8 @@ public class AccountService {
     }
 
     public Long createAccount(Account account) {
-        return null;
+        AccountEntity accountEntity = new AccountEntity(account.getFirstName(), account.getSecondName(), account.getAccountNumber());
+        AccountEntity accountEntitySaved = accountRepository.save(accountEntity);
+        return accountEntitySaved.getId();
     }
 }

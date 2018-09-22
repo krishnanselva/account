@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
@@ -45,11 +47,11 @@ public class AccountServiceTest {
 
     @Test
     public void createAccount_returnsAccountId() throws Exception {
-        Account account = new Account("Steven", "Doe", "1238");
-        AccountEntity accountEntity = new AccountEntity(account.getFirstName(), account.getSecondName(), account.getAccountNumber());
-        AccountEntity accountEntitySaved = new AccountEntity(accountEntity.getFirstName(), accountEntity.getSecondName(), accountEntity.getAccountNumber());
+        Account account = new Account("Steven", "Doe", "12381");
+        final AccountEntity accountEntity = new AccountEntity(account.getFirstName(), account.getSecondName(), account.getAccountNumber());
+        final AccountEntity accountEntitySaved = new AccountEntity(accountEntity.getFirstName(), accountEntity.getSecondName(), accountEntity.getAccountNumber());
         accountEntitySaved.setId(1L);
-        given(accountRepository.save(accountEntity)).willReturn(accountEntitySaved);
+        when(accountRepository.save(any(AccountEntity.class))).thenReturn(accountEntitySaved);
         Long accountId = accountService.createAccount(account);
         assertThat(accountId).isEqualTo(1L);
     }
