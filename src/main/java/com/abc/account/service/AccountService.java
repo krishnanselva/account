@@ -23,4 +23,8 @@ public class AccountService {
         accountEntities.forEach(accountEntity -> accounts.add(new Account(accountEntity.getId(), accountEntity.getFirstName(), accountEntity.getSecondName(), accountEntity.getAccountNumber())));
         return accounts;
     }
+
+    public Long createAccount(Account account) {
+        return null;
+    }
 }
