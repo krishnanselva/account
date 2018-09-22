@@ -42,4 +42,15 @@ public class AccountServiceTest {
         assertThat(accounts.get(0).getSecondName()).isEqualTo(accountEntities.get(0).getSecondName());
         assertThat(accounts.get(0).getAccountNumber()).isEqualTo(accountEntities.get(0).getAccountNumber());
     }
+
+    @Test
+    public void createAccount_returnsAccountId() throws Exception {
+        Account account = new Account("Steven", "Doe", "1238");
+        AccountEntity accountEntity = new AccountEntity(account.getFirstName(), account.getSecondName(), account.getAccountNumber());
+        AccountEntity accountEntitySaved = new AccountEntity(accountEntity.getFirstName(), accountEntity.getSecondName(), accountEntity.getAccountNumber());
+        accountEntitySaved.setId(1L);
+        given(accountRepository.save(accountEntity)).willReturn(accountEntitySaved);
+        Long accountId = accountService.createAccount(account);
+        assertThat(accountId).isEqualTo(1L);
+    }
 }
