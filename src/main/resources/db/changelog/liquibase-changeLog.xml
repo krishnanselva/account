@@ -6,7 +6,6 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet author="Selva" id="1439225004329-1">
-
         <createTable tableName="account">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>

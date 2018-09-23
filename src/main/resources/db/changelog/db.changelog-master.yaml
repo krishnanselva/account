@@ -1,5 +1,7 @@
 databaseChangeLog:
    - include:
       file: db/changelog/liquibase-changeLog.xml
-#   - include:
-#      file: db/changelog/liquibase-changeLog-1.xml
+   - include:
+      file: db/changelog/liquibase-changeLog-1.xml
+   - include:
+      file: db/changelog/liquibase-changeLog-2.xml

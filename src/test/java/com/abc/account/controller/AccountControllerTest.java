@@ -3,6 +3,8 @@ package com.abc.account.controller;
 import com.abc.account.Constants;
 import com.abc.account.domain.Account;
 import com.abc.account.exception.AccountException;
+import com.abc.account.exception.AccountNotFoundException;
+import com.abc.account.exception.DuplicateAccountException;
 import com.abc.account.service.AccountService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.abc.account.Constants.REST_API_PATH;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,7 +41,7 @@ public class AccountControllerTest {
 
     @Test
     public void findAllAccounts_throwsException() throws Exception {
-        given(accountService.findAllAccounts()).willThrow(new AccountException());
+        given(accountService.findAllAccounts()).willThrow(new AccountException(new Exception("No records found")));
         mockMvc.perform(get(REST_API_PATH)).andExpect(status().is5xxServerError());
     }
 
@@ -55,7 +59,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void createAccount_returnMessage() throws Exception {
+    public void createAccount_returnSuccessMessage() throws Exception {
         given(accountService.createAccount(new Account("Steven", "Doe", "1238"))).willReturn(1L);
         MockHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.post(REST_API_PATH)
@@ -70,6 +74,24 @@ public class AccountControllerTest {
     public void deleteAccount_returnMessage() throws Exception {
         mockMvc.perform(delete(REST_API_PATH + "/1"))
                 .andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DELETED));
+    }
+
+    @Test
+    public void createAccount_returnDuplicateAccountErrorMessage() throws Exception {
+        given(accountService.createAccount(any(Account.class))).willThrow(DuplicateAccountException.class);
+        MockHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.post(REST_API_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"firstName\": \"Steven\",\"secondName\": \"Doe\",\"accountNumber\": \"1238\"}");
+        mockMvc.perform(builder).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DUPLICATE));
+
+    }
+
+    @Test
+    public void deleteAccount_returnAccountNotFoundErrorMessage() throws Exception {
+        doThrow(new AccountNotFoundException(new Exception(Constants.ACCOUNT_NOT_FOUND))).when(accountService).deleteAccount(any(Long.class));
+        mockMvc.perform(delete(REST_API_PATH + "/1"))
+                .andExpect(status().is5xxServerError()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_NOT_FOUND));
     }
 
 

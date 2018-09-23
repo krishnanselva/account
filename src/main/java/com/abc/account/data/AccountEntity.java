@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "account")
 public class AccountEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_account_id")
+    @SequenceGenerator(name = "seq_account_id", sequenceName = "seq_account_id", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

@@ -3,6 +3,8 @@ package com.abc.account.controller;
 import com.abc.account.Constants;
 import com.abc.account.domain.Account;
 import com.abc.account.domain.Message;
+import com.abc.account.exception.AccountNotFoundException;
+import com.abc.account.exception.DuplicateAccountException;
 import com.abc.account.service.AccountService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -44,9 +46,23 @@ public class AccountController {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleException(Exception e) {
+    public ResponseEntity<Message> handleException(DuplicateAccountException e) {
         logger.error(e.toString());
         logger.debug(e.toString(), e);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_DUPLICATE), null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Message> handleException(AccountNotFoundException e) {
+        logger.error(e.toString());
+        logger.debug(e.toString(), e);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_NOT_FOUND), null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Message> handleException(Exception e) {
+        logger.error(e.toString());
+        logger.debug(e.toString(), e);
+        return new ResponseEntity<Message>(new Message(e.getMessage()), null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
