@@ -15,5 +15,10 @@ Key Tech Stack:
 8. JUnit
 9. Mockito
 
-Test driven development top down approach 
+Test driven development top down approach
+
+Build : mvn package
+Run : java -jar target\account-1.0-SNAPSHOT.jar
+Test : http://localhost:8080/swagger-ui.html
+ 
 

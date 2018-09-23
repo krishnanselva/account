@@ -67,8 +67,8 @@ public class AccountIntegrationTest {
 
     @Test
     public void shouldCreateAccount() {
-
-        Account account = new Account("Will", "Jones", "456");
+        accountRepository.deleteAll();
+        Account account = new Account("Will", "Jones", "4561");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -88,8 +88,8 @@ public class AccountIntegrationTest {
 
     @Test
     public void shouldDeleteAccount() {
-
-        AccountEntity accountEntity = accountRepository.save(new AccountEntity("Will", "Jones", "456"));
+        accountRepository.deleteAll();
+        AccountEntity accountEntity = accountRepository.save(new AccountEntity("Will", "Jones", "4562"));
 
         ResponseEntity<Message> response = template.exchange(
                 getBaseUrl() + "/" + accountEntity.getId(),

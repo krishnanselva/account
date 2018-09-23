@@ -1,7 +1,10 @@
 package com.abc.account;
 
+import com.abc.account.controller.AccountController;
+import com.abc.account.domain.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AccountApplication implements CommandLineRunner {
 
     Logger logger = LoggerFactory.getLogger(AccountApplication.class);
-/*    @Autowired
-    private AccountRepository accountRepository;*/
+
+    @Autowired
+    AccountController accountController;
 
     public static void main(String[] args) {
         SpringApplication.run(AccountApplication.class, args);
@@ -20,20 +24,10 @@ public class AccountApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-/*        accountRepository.deleteAll();
-        List<AccountEntity> accountEntities = new ArrayList<AccountEntity>();
-        accountEntities.add(new AccountEntity("John", "Doe", "1234"));
-        accountEntities.add(new AccountEntity("Jane", "Doe", "1235"));
-        accountEntities.add(new AccountEntity("Jim", "Taylor", "1236"));
-        logger.info("initial data loading");
-        accountEntities.forEach(accountEntity -> {
-
-            AccountEntity accountSaved = accountRepository.save(accountEntity);
-            logger.info("created account id : " + accountSaved.getId());
-
-        });
-        logger.info("initial data loaded");
-        logger.info("AccountApplication started");*/
+        accountController.createAccount((new Account("John", "Doe", "1234")));
+        accountController.createAccount((new Account("Jane", "Doe", "1235")));
+        accountController.createAccount((new Account("Jim", "Taylor", "1236")));
+        logger.info("***Greetings from SARA***");
     }
 
 }

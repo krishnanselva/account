@@ -51,4 +51,12 @@ public class AccountRepositoryTest {
         Assertions.assertThat(accountEntitySaved.getId()).isNotNull().isNotZero();
     }
 
+    @Test
+    public void deleteAccount_returnsVoid() throws Exception {
+        AccountEntity accountEntity = new AccountEntity("Steven", "Doe", "123812");
+        AccountEntity accountEntitySaved = entityManager.persistAndFlush(accountEntity);
+        accountRepository.deleteById(accountEntitySaved.getId());
+        Assertions.assertThat(accountRepository.findById(accountEntitySaved.getId())).isEmpty();
+    }
+
 }

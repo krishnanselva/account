@@ -3,6 +3,7 @@ package com.abc.account.data;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "account")
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
