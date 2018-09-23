@@ -68,7 +68,8 @@ public class AccountControllerTest {
 
     @Test
     public void deleteAccount_returnMessage() throws Exception {
-        mockMvc.perform(delete(REST_API_PATH + "/1")).andExpect(status().isOk());
+        mockMvc.perform(delete(REST_API_PATH + "/1"))
+                .andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DELETED));
     }
 
 

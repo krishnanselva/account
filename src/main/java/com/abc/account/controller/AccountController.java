@@ -47,7 +47,7 @@ public class AccountController {
     @DeleteMapping("/{accountId}")
     public ResponseEntity<Message> deleteAccount(@PathVariable Long accountId) {
         accountService.deleteAccount(accountId);
-        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_CREATED), null, HttpStatus.OK);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_DELETED), null, HttpStatus.OK);
     }
 
     @ExceptionHandler
