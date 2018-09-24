@@ -60,6 +60,7 @@ public class AccountIntegrationTest {
                 null,
                 new ParameterizedTypeReference<List<Account>>() {
                 });
+		assertEquals(HttpStatus.FOUND, response.getStatusCode());		
         List<Account> accounts = response.getBody();
         assertEquals(3, accounts.size());
     }

@@ -27,7 +27,7 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<List<Account>> findAllAccounts() {
         logger.info("findAllAccounts");
-        return new ResponseEntity<List<Account>>(accountService.findAllAccounts(), HttpStatus.OK);
+        return new ResponseEntity<List<Account>>(accountService.findAllAccounts(), HttpStatus.FOUND);
 
     }
 
@@ -49,14 +49,14 @@ public class AccountController {
     public ResponseEntity<Message> handleException(DuplicateAccountException e) {
         logger.error(e.toString());
         logger.debug(e.toString(), e);
-        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_DUPLICATE), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_DUPLICATE), null, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler
     public ResponseEntity<Message> handleException(AccountNotFoundException e) {
         logger.error(e.toString());
         logger.debug(e.toString(), e);
-        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_NOT_FOUND), null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Message>(new Message(Constants.ACCOUNT_NOT_FOUND), null, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler

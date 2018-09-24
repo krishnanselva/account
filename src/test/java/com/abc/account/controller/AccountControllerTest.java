@@ -42,7 +42,7 @@ public class AccountControllerTest {
     @Test
     public void findAllAccounts_throwsException() throws Exception {
         given(accountService.findAllAccounts()).willThrow(new AccountException(new Exception("No records found")));
-        mockMvc.perform(get(REST_API_PATH)).andExpect(status().is5xxServerError());
+        mockMvc.perform(get(REST_API_PATH)).andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class AccountControllerTest {
         accounts.add(new Account("Jane", "Doe", "1235"));
         accounts.add(new Account("Jim", "Taylor", "1236"));
         given(accountService.findAllAccounts()).willReturn(accounts);
-        mockMvc.perform(get(REST_API_PATH)).andExpect(status().isOk())
+        mockMvc.perform(get(REST_API_PATH)).andExpect(status().isFound())
                 .andExpect(jsonPath("$[0].firstName").value(accounts.get(0).getFirstName()))
                 .andExpect(jsonPath("$[0].secondName").value(accounts.get(0).getSecondName()))
                 .andExpect(jsonPath("$[0].accountNumber").value(accounts.get(0).getAccountNumber()));
@@ -65,7 +65,7 @@ public class AccountControllerTest {
                 MockMvcRequestBuilders.post(REST_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"firstName\": \"Steven\",\"secondName\": \"Doe\",\"accountNumber\": \"1238\"}");
-        mockMvc.perform(builder).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_CREATED));
+        mockMvc.perform(builder).andExpect(status().isCreated()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_CREATED));
 
     }
 
@@ -73,7 +73,7 @@ public class AccountControllerTest {
     @Test
     public void deleteAccount_returnMessage() throws Exception {
         mockMvc.perform(delete(REST_API_PATH + "/1"))
-                .andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DELETED));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DELETED));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AccountControllerTest {
                 MockMvcRequestBuilders.post(REST_API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"firstName\": \"Steven\",\"secondName\": \"Doe\",\"accountNumber\": \"1238\"}");
-        mockMvc.perform(builder).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DUPLICATE));
+        mockMvc.perform(builder).andExpect(status().isConflict()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_DUPLICATE));
 
     }
 
@@ -91,7 +91,7 @@ public class AccountControllerTest {
     public void deleteAccount_returnAccountNotFoundErrorMessage() throws Exception {
         doThrow(new AccountNotFoundException(new Exception(Constants.ACCOUNT_NOT_FOUND))).when(accountService).deleteAccount(any(Long.class));
         mockMvc.perform(delete(REST_API_PATH + "/1"))
-                .andExpect(status().is5xxServerError()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_NOT_FOUND));
+                .andExpect(status().isNotFound()).andExpect(jsonPath("$.message").value(Constants.ACCOUNT_NOT_FOUND));
     }
 
 
